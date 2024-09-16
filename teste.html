@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    
+    <title>Editor de texto</title>
+    <!-- Inclusão do Font Awesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Inclusão do estilo do Quill Editor -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <style>
+        /* Estilo para a barra de ferramentas */
+        #toolbar {
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+            background: #f8f9fa;
+            padding: 5px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        /* Estilo para cada grupo de botões na barra de ferramentas */
+        #toolbar .ql-formats {
+            margin-right: 5px;
+        }
+        /* Estilo para a barra de ferramentas com o tema 'snow' do Quill */
+        .ql-toolbar.ql-snow {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        /* Estilo para o container do editor com o tema 'snow' do Quill */
+        .ql-container.ql-snow {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Barra de ferramentas para o editor -->
+        <div id="toolbar">
+            <button class="botaoNegrito" title="Negrito"><i class="fas fa-bold"></i></button>
+            <button class="botaoItalico" title="Itálico"><i class="fas fa-italic"></i></button>
+            <button class="botaoSublinhar" title="Sublinhado"><i class="fas fa-underline"></i></button>
+            <button class="botaoCopiar" title="Copiar"><i class="fas fa-copy"></i></button>
+            <button class="botaoColar" title="Colar"><i class="fas fa-paste"></i></button>
+            <button class="botaoApagar" title="Apagar"><i class="fas fa-trash"></i></button>
+            <button class="botaoEnviar" title="Enviar"><i class="fas fa-paper-plane"></i></button>
+        </div>
+        <!-- Container onde o editor será inserido -->
+        <div id="editor" style="height: 400px;"></div>
+    </div>
+    <!-- Inclusão do script do Quill Editor -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.6/quill.js"></script>
+    <script>
+        // Inicialização do Quill Editor com o seletor do editor e a configuração da barra de ferramentas
+        var quill = new Quill('#editor', {
+            modules: {
+                toolbar: '#toolbar'  // Define a barra de ferramentas personalizada
+            },
+            theme: 'snow'  // Define o tema do editor
+        });
+
+         // Função para copiar todo o texto do editor
+        document.querySelector('.botaoCopiar').addEventListener('click', function() {
+            var texto = quill.getText(); // Obtém todo o texto do editor
+            navigator.clipboard.writeText(texto).then(function() {
+                alert('O texto foi copiado para a área de transferência.');
+            }).catch(function() {
+                alert('Falha ao copiar o texto.');
+            });
+        });
+
+        document.querySelector('.botaoColar').addEventListener('click', function() {
+            navigator.clipboard.readText().then(function(texto) {
+                var tamTexto = quill.getSelection();
+                if (tamTexto) {
+                    quill.insertText(tamTexto.index, texto);
+                    alert('Texto colado.');
+                }
+            }).catch(function() {
+                alert('Falha ao colar o texto.');
+            });
+        });
+
+        document.querySelector('.botaoApagar').addEventListener('click', function() {
+            quill.setText("");
+        });
+
+
+    </script>
+</body>
+</html>
