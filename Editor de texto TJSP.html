@@ -83,6 +83,7 @@
             theme: 'snow'
         });
 
+        // função para proteger contra possíveis entradas XSS
         function sanitizeContent(content) {
             return DOMPurify.sanitize(content);
         }
