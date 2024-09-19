@@ -7,7 +7,7 @@
         script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com https://cdn.quilljs.com;
         style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.quilljs.com;
         font-src 'self' https://cdnjs.cloudflare.com;
-        img-src 'self' data: https://cdn.quilljs.com;
+        img-src 'self' data: https://cdn.quilljs.com *;  // Add * to allow images from anywhere
         connect-src 'self';
         frame-src 'self';
     ">
@@ -87,13 +87,6 @@
             <!-- DEFINIÇÃO DO BOTÃO DEV/HTML E SEU ÍCONE NO HTML/TOOLBAR-->
             <div class="button-container">
                 <button class="botaoHTML" title="Dev"><i class="fas fa-code"></i></button>
-            </div>
-
-
-            <!-- DEFINIÇÃO DO BOTÃO IMAGEM E SEU ÍCONE NO HTML/TOOLBAR-->
-            <div class="button-container">
-                <button class="botaoImagem" title="Imagem"><i class="fas fa-image"></i></button>
-                <input type="file" id="image-input" style="display: none;">
             </div>
 
             
@@ -230,7 +223,7 @@
         });
 
 
-        /****************************** FUNÇÃO BOTÃO COLAR ******************************/
+        /****************************** FUNÇÃO PARA ADICIONAR IMAGEM ******************************/
         document.querySelector('#image-input').addEventListener('change', function() 
         {
             var file = this.files[0];
@@ -243,6 +236,13 @@
             reader.readAsDataURL(file);
         });
 
+
+        /****************************** FUNÇÃO BOTÃO DEV ******************************/
+        document.querySelector('.botaoHTML').addEventListener('click', function() 
+        {
+            confirmaClique(document.querySelector('.botaoHTML'), 'fas fa-check');
+        });
+        
 
         /****************************** FUNÇÃO BOTÃO ENVIAR ******************************/
         document.querySelector('.botaoEnviar').addEventListener('click', function() 
