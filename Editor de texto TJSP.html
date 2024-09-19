@@ -1,3 +1,6 @@
+@{
+    ViewData["Title"] = "Home Page";
+}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -7,13 +10,13 @@
         script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com https://cdn.quilljs.com;
         style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.quilljs.com;
         font-src 'self' https://cdnjs.cloudflare.com;
-        img-src 'self' data: https://cdn.quilljs.com *;  // Add * to allow images from anywhere
+        img-src 'self' data: https://cdn.quilljs.com *;  // permite a adição de imagens
         connect-src 'self';
         frame-src 'self';
     ">
     <title>Editor de texto</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">   
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <style>
         #toolbar {
             margin-bottom: 10px;
@@ -23,22 +26,27 @@
             display: flex;
             flex-wrap: wrap;
         }
-        #toolbar .ql-formats {
-            margin-right: 5px;
-        }
+
+            #toolbar .ql-formats {
+                margin-right: 5px;
+            }
+
         .ql-toolbar.ql-snow {
             border: 1px solid #ddd;
             border-radius: 4px;
         }
+
         .ql-container.ql-snow {
             border: 1px solid #ddd;
             border-radius: 4px;
         }
+
         .check-icon {
             display: none;
             color: green;
             margin-left: 5px;
         }
+
         .button-container {
             display: flex;
             align-items: center;
@@ -47,7 +55,7 @@
 </head>
 <body>
     <div class="container">
-        <div id="toolbar"> 
+        <div id="toolbar">
             <!-- DEFINIÇÃO DO BOTÃO NEGRITO E SEU ÍCONE NO HTML/TOOLBAR-->
             <div class="button-container">
                 <button class="botaoNegrito" title="Negrito"><i class="fas fa-bold"></i></button>
@@ -70,30 +78,30 @@
             <div class="button-container">
                 <button class="botaoCopiar" title="Copiar"><i class="fas fa-copy"></i></button>
             </div>
-            
-            
+
+
             <!-- DEFINIÇÃO DO BOTÃO COLAR E SEU ÍCONE NO HTML/TOOLBAR-->
             <div class="button-container">
                 <button class="botaoColar" title="Colar"><i class="fas fa-paste"></i></button>
             </div>
-            
-            
+
+
             <!-- DEFINIÇÃO DO BOTÃO APAGAR E SEU ÍCONE NO HTML/TOOLBAR-->
             <div class="button-container">
                 <button class="botaoApagar" title="Apagar"><i class="fas fa-trash"></i></button>
             </div>
-            
-            
+
+
             <!-- DEFINIÇÃO DO BOTÃO DEV/HTML E SEU ÍCONE NO HTML/TOOLBAR-->
             <div class="button-container">
                 <button class="botaoHTML" title="Dev"><i class="fas fa-code"></i></button>
             </div>
 
-            
+
             <!-- DEFINIÇÃO DO BOTÃO ENVIAR E SEU ÍCONE NO HTML/TOOLBAR-->
-            <div class="button-container">
-                <button class="botaoEnviar" title="Enviar"><i class="fas fa-paper-plane"></i></button>
-            </div>
+            <!--<div class="button-container">-->
+                <!--<button class="botaoEnviar" title="Enviar"><i class="fas fa-paper-plane"></i></button>-->
+            <!--</div>-->
         </div>
         <div id="editor" style="height: 400px;"></div>
     </div>
@@ -109,41 +117,34 @@
         });
 
         // função para proteger contra possíveis entradas XSS
-        function sanitizeContent(content) 
-        {
+        function sanitizeContent(content) {
             return DOMPurify.sanitize(content);
         }
 
         // FUNÇÃO QUE MUDA O ÍCONE PARA CHECK E VOLTA AO NORMAL
-        function confirmaClique(button, categoriaIcone) 
-        {
+        function confirmaClique(button, categoriaIcone) {
             var icon = button.querySelector('i');
-            if (icon) 
-            {
+            if (icon) {
                 var iconeCheck = icon.getAttribute('data-original-class');
-                if (!iconeCheck) 
-                {
+                if (!iconeCheck) {
                     iconeCheck = icon.className;
                     icon.setAttribute('data-original-class', iconeCheck);
                 }
 
                 // Força a restauração da classe original antes de aplicar a nova
                 icon.className = iconeCheck;
-                setTimeout(function() 
-                {
+                setTimeout(function () {
                     icon.className = categoriaIcone;
-                    setTimeout(function() 
-                    {
+                    setTimeout(function () {
                         icon.className = iconeCheck;
                     }, 1000); // DEFINE O TEMPO EM QUE O ÍCONE CHECK VAI APARECER
-                }, 0);// Altera o ícone de volta para o original 
+                }, 0);// Altera o ícone de volta para o original
             }
         }
 
 
         /****************************** FUNÇÃO BOTÃO NEGRITO ******************************/
-        document.querySelector('.botaoNegrito').addEventListener('click', function() 
-        {
+        document.querySelector('.botaoNegrito').addEventListener('click', function () {
             var range = quill.getSelection();
             if (range) {
                 var format = quill.getFormat(range);
@@ -155,8 +156,7 @@
 
 
         /****************************** FUNÇÃO BOTÃO ITALICO ******************************/
-        document.querySelector('.botaoItalico').addEventListener('click', function() 
-        {
+        document.querySelector('.botaoItalico').addEventListener('click', function () {
             var range = quill.getSelection();
             if (range) {
                 var format = quill.getFormat(range);
@@ -168,8 +168,7 @@
 
 
         /****************************** FUNÇÃO BOTÃO SUBLINHAR ******************************/
-        document.querySelector('.botaoSublinhar').addEventListener('click', function() 
-        {
+        document.querySelector('.botaoSublinhar').addEventListener('click', function () {
             var range = quill.getSelection();
             if (range) {
                 var format = quill.getFormat(range);
@@ -181,81 +180,55 @@
 
 
         /****************************** FUNÇÃO BOTÃO COPIAR ******************************/
-        document.querySelector('.botaoCopiar').addEventListener('click', function() 
-        {
+        document.querySelector('.botaoCopiar').addEventListener('click', function () {
             var texto = quill.getText();
-            navigator.clipboard.writeText(texto).then(function() 
-            {
+            navigator.clipboard.writeText(texto).then(function () {
                 confirmaClique(document.querySelector('.botaoCopiar'), 'fas fa-check');
                 //alert('Copiado com sucesso.');
-            }).catch(function() 
-            {
+            }).catch(function () {
                 alert('Falha ao copiar o texto.');
             });
         });
 
 
         /****************************** FUNÇÃO BOTÃO COLAR ******************************/
-        document.querySelector('.botaoColar').addEventListener('click', function() 
-        {
-            navigator.clipboard.readText().then(function(texto) 
-            {
+        document.querySelector('.botaoColar').addEventListener('click', function () {
+            navigator.clipboard.readText().then(function (texto) {
                 var tamTexto = quill.getSelection();
-                if (tamTexto) 
-                {
+                if (tamTexto) {
                     quill.insertText(tamTexto.index, texto);
                     confirmaClique(document.querySelector('.botaoColar'), 'fas fa-check');
                     //alert('Colado com sucesso.');
                 }
-            }).catch(function() 
-            {
+            }).catch(function () {
                 alert('Falha ao colar o texto.');
             });
         });
 
 
         /****************************** FUNÇÃO BOTÃO APAGAR ******************************/
-        document.querySelector('.botaoApagar').addEventListener('click', function() 
-        {
+        document.querySelector('.botaoApagar').addEventListener('click', function () {
             quill.setText("");
             confirmaClique(document.querySelector('.botaoApagar'), 'fas fa-check');
             //alert('Apagado com sucesso.');
         });
 
 
-        /****************************** FUNÇÃO PARA ADICIONAR IMAGEM ******************************/
-        document.querySelector('#image-input').addEventListener('change', function() 
-        {
-            var file = this.files[0];
-            var reader = new FileReader();
-            reader.onload = function() 
-            {
-                var imageData = reader.result;
-                quill.insertEmbed(quill.getSelection(), 'image', imageData);
-            };
-            reader.readAsDataURL(file);
-        });
-
-
         /****************************** FUNÇÃO BOTÃO DEV ******************************/
-        document.querySelector('.botaoHTML').addEventListener('click', function() 
-        {
-            confirmaClique(document.querySelector('.botaoHTML'), 'fas fa-check');
-        });
-        
+        /*
+        document.querySelector('.botaoHTML').addEventListener('click', function () {
+            
+        }); */
+
 
         /****************************** FUNÇÃO BOTÃO ENVIAR ******************************/
-        document.querySelector('.botaoEnviar').addEventListener('click', function() 
-        {
-            var conteudoHtml = quill.root.innerHTML;
-            var textoSeguro = sanitizeContent(conteudoHtml);
-            console.log(textoSeguro);
-            confirmaClique(document.querySelector('.botaoEnviar'), 'fas fa-check');
-            //alert('Enviado com sucesso.');
-        });
+        /*
+        document.querySelector('.botaoEnviar').addEventListener('click', function () {
+            
+        }); */
 
-        
-        
+
+
     </script>
 </body>
 </html>
