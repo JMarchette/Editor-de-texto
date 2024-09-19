@@ -47,7 +47,7 @@
 </head>
 <body>
     <div class="container">
-        <div id="toolbar">
+        <div id="toolbar"> //toolbar dos botões do cabeçalho
             <div class="button-container">
                 <button class="botaoNegrito" title="Negrito"><i class="fas fa-bold"></i></button>
             </div>
@@ -84,16 +84,19 @@
         });
 
         // função para proteger contra possíveis entradas XSS
-        function sanitizeContent(content) {
+        function sanitizeContent(content) 
+        {
             return DOMPurify.sanitize(content);
         }
 
-        function confirmaClique(button, iconClass) {
+        function confirmaClique(button, iconClass) 
+        {
             var icon = button.querySelector('i');
             if (icon) {
                 var originalClass = icon.className;
                 icon.className = iconClass;
-                setTimeout(function() {
+                setTimeout(function() 
+                {
                     icon.className = originalClass;
                 }, 3000); // Exibe o ícone de confirmação por 3 segundos
             }
@@ -101,28 +104,33 @@
 
         document.querySelector('.botaoCopiar').addEventListener('click', function() {
             var texto = quill.getText();
-            navigator.clipboard.writeText(texto).then(function() {
+            navigator.clipboard.writeText(texto).then(function() 
+            {
                 confirmaClique(document.querySelector('.botaoCopiar'), 'fas fa-check');
                 //alert('Copiado com sucesso.');
-            }).catch(function() {
+            }).catch(function() 
+            {
                 alert('Falha ao copiar o texto.');
             });
         });
 
         document.querySelector('.botaoColar').addEventListener('click', function() {
-            navigator.clipboard.readText().then(function(texto) {
+            navigator.clipboard.readText().then(function(texto) 
+            {
                 var tamTexto = quill.getSelection();
                 if (tamTexto) {
                     quill.insertText(tamTexto.index, texto);
                     confirmaClique(document.querySelector('.botaoColar'), 'fas fa-check');
                     //alert('Colado com sucesso.');
                 }
-            }).catch(function() {
+            }).catch(function() 
+            {
                 alert('Falha ao colar o texto.');
             });
         });
 
-        document.querySelector('.botaoApagar').addEventListener('click', function() {
+        document.querySelector('.botaoApagar').addEventListener('click', function() 
+        {
             quill.setText("");
             confirmaClique(document.querySelector('.botaoApagar'), 'fas fa-check');
             //alert('Apagado com sucesso.');
@@ -131,7 +139,7 @@
         document.querySelector('.botaoEnviar').addEventListener('click', function() {
             var conteudoHtml = quill.root.innerHTML;
             var textoSeguro = sanitizeContent(conteudoHtml);
-            console.log(textoSeguro); // Substitua por chamada para enviar os dados
+            console.log(textoSeguro);
             confirmaClique(document.querySelector('.botaoEnviar'), 'fas fa-check');
             //alert('Enviado com sucesso.');
         });
