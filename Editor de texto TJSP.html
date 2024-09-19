@@ -47,25 +47,57 @@
 </head>
 <body>
     <div class="container">
-        <div id="toolbar"> //toolbar dos botões do cabeçalho
+        <div id="toolbar"> 
+            <!-- DEFINIÇÃO DO BOTÃO NEGRITO E SEU ÍCONE NO HTML/TOOLBAR-->
             <div class="button-container">
                 <button class="botaoNegrito" title="Negrito"><i class="fas fa-bold"></i></button>
             </div>
+
+
+            <!-- DEFINIÇÃO DO BOTÃO ITALICO E SEU ÍCONE NO HTML/TOOLBAR-->
             <div class="button-container">
                 <button class="botaoItalico" title="Itálico"><i class="fas fa-italic"></i></button>
             </div>
+
+
+            <!-- DEFINIÇÃO DO BOTÃO SUBLINHAR E SEU ÍCONE NO HTML/TOOLBAR-->
             <div class="button-container">
                 <button class="botaoSublinhar" title="Sublinhado"><i class="fas fa-underline"></i></button>
             </div>
+
+
+            <!-- DEFINIÇÃO DO BOTÃO COPIAR E SEU ÍCONE NO HTML/TOOLBAR-->
             <div class="button-container">
                 <button class="botaoCopiar" title="Copiar"><i class="fas fa-copy"></i></button>
             </div>
+            
+            
+            <!-- DEFINIÇÃO DO BOTÃO COLAR E SEU ÍCONE NO HTML/TOOLBAR-->
             <div class="button-container">
                 <button class="botaoColar" title="Colar"><i class="fas fa-paste"></i></button>
             </div>
+            
+            
+            <!-- DEFINIÇÃO DO BOTÃO APAGAR E SEU ÍCONE NO HTML/TOOLBAR-->
             <div class="button-container">
                 <button class="botaoApagar" title="Apagar"><i class="fas fa-trash"></i></button>
             </div>
+            
+            
+            <!-- DEFINIÇÃO DO BOTÃO DEV/HTML E SEU ÍCONE NO HTML/TOOLBAR-->
+            <div class="button-container">
+                <button class="botaoHTML" title="Dev"><i class="fas fa-code"></i></button>
+            </div>
+
+
+            <!-- DEFINIÇÃO DO BOTÃO IMAGEM E SEU ÍCONE NO HTML/TOOLBAR-->
+            <div class="button-container">
+                <button class="botaoImagem" title="Imagem"><i class="fas fa-image"></i></button>
+                <input type="file" id="image-input" style="display: none;">
+            </div>
+
+            
+            <!-- DEFINIÇÃO DO BOTÃO ENVIAR E SEU ÍCONE NO HTML/TOOLBAR-->
             <div class="button-container">
                 <button class="botaoEnviar" title="Enviar"><i class="fas fa-paper-plane"></i></button>
             </div>
@@ -89,20 +121,75 @@
             return DOMPurify.sanitize(content);
         }
 
-        function confirmaClique(button, iconClass) 
+        // FUNÇÃO QUE MUDA O ÍCONE PARA CHECK E VOLTA AO NORMAL
+        function confirmaClique(button, categoriaIcone) 
         {
             var icon = button.querySelector('i');
-            if (icon) {
-                var originalClass = icon.className;
-                icon.className = iconClass;
+            if (icon) 
+            {
+                var iconeCheck = icon.getAttribute('data-original-class');
+                if (!iconeCheck) 
+                {
+                    iconeCheck = icon.className;
+                    icon.setAttribute('data-original-class', iconeCheck);
+                }
+
+                // Força a restauração da classe original antes de aplicar a nova
+                icon.className = iconeCheck;
                 setTimeout(function() 
                 {
-                    icon.className = originalClass;
-                }, 3000); // Exibe o ícone de confirmação por 3 segundos
+                    icon.className = categoriaIcone;
+                    setTimeout(function() 
+                    {
+                        icon.className = iconeCheck;
+                    }, 1000); // DEFINE O TEMPO EM QUE O ÍCONE CHECK VAI APARECER
+                }, 0);// Altera o ícone de volta para o original 
             }
         }
 
-        document.querySelector('.botaoCopiar').addEventListener('click', function() {
+
+        /****************************** FUNÇÃO BOTÃO NEGRITO ******************************/
+        document.querySelector('.botaoNegrito').addEventListener('click', function() 
+        {
+            var range = quill.getSelection();
+            if (range) {
+                var format = quill.getFormat(range);
+                var isBold = format.bold || false;
+                quill.formatText(range.index, range.length, 'bold', !isBold);
+                confirmaClique(document.querySelector('.botaoNegrito'), 'fas fa-check');
+            }
+        });
+
+
+        /****************************** FUNÇÃO BOTÃO ITALICO ******************************/
+        document.querySelector('.botaoItalico').addEventListener('click', function() 
+        {
+            var range = quill.getSelection();
+            if (range) {
+                var format = quill.getFormat(range);
+                var isItalic = format.italic || false;
+                quill.formatText(range.index, range.length, 'italic', !isItalic);
+                confirmaClique(document.querySelector('.botaoItalico'), 'fas fa-check');
+            }
+        });
+
+
+        /****************************** FUNÇÃO BOTÃO SUBLINHAR ******************************/
+        document.querySelector('.botaoSublinhar').addEventListener('click', function() 
+        {
+            var range = quill.getSelection();
+            if (range) {
+                var format = quill.getFormat(range);
+                var isUnderline = format.underline || false;
+                quill.formatText(range.index, range.length, 'underline', !isUnderline);
+                confirmaClique(document.querySelector('.botaoSublinhar'), 'fas fa-check');
+            }
+        });
+
+
+        /****************************** FUNÇÃO BOTÃO COPIAR ******************************/
+        document.querySelector('.botaoCopiar').addEventListener('click', function() 
+        {
             var texto = quill.getText();
             navigator.clipboard.writeText(texto).then(function() 
             {
@@ -114,11 +201,15 @@
             });
         });
 
-        document.querySelector('.botaoColar').addEventListener('click', function() {
+
+        /****************************** FUNÇÃO BOTÃO COLAR ******************************/
+        document.querySelector('.botaoColar').addEventListener('click', function() 
+        {
             navigator.clipboard.readText().then(function(texto) 
             {
                 var tamTexto = quill.getSelection();
-                if (tamTexto) {
+                if (tamTexto) 
+                {
                     quill.insertText(tamTexto.index, texto);
                     confirmaClique(document.querySelector('.botaoColar'), 'fas fa-check');
                     //alert('Colado com sucesso.');
@@ -129,6 +220,8 @@
             });
         });
 
+
+        /****************************** FUNÇÃO BOTÃO APAGAR ******************************/
         document.querySelector('.botaoApagar').addEventListener('click', function() 
         {
             quill.setText("");
@@ -136,7 +229,24 @@
             //alert('Apagado com sucesso.');
         });
 
-        document.querySelector('.botaoEnviar').addEventListener('click', function() {
+
+        /****************************** FUNÇÃO BOTÃO COLAR ******************************/
+        document.querySelector('#image-input').addEventListener('change', function() 
+        {
+            var file = this.files[0];
+            var reader = new FileReader();
+            reader.onload = function() 
+            {
+                var imageData = reader.result;
+                quill.insertEmbed(quill.getSelection(), 'image', imageData);
+            };
+            reader.readAsDataURL(file);
+        });
+
+
+        /****************************** FUNÇÃO BOTÃO ENVIAR ******************************/
+        document.querySelector('.botaoEnviar').addEventListener('click', function() 
+        {
             var conteudoHtml = quill.root.innerHTML;
             var textoSeguro = sanitizeContent(conteudoHtml);
             console.log(textoSeguro);
@@ -144,6 +254,8 @@
             //alert('Enviado com sucesso.');
         });
 
+        
+        
     </script>
 </body>
 </html>
