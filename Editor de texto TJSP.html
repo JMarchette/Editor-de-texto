@@ -1,20 +1,10 @@
-@{
-    ViewData["Title"] = "Home Page";
-}
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Content-Security-Policy" content="
-        default-src 'self';
-        script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com https://cdn.quilljs.com;
-        style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.quilljs.com;
-        font-src 'self' https://cdnjs.cloudflare.com;
-        img-src 'self' data: https://cdn.quilljs.com *;  // permite a adição de imagens
-        link-src;
-        connect-src 'self';
-        frame-src 'self';
-    ">
+    
+    
     <title>Editor de texto</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
@@ -29,9 +19,9 @@
             flex-wrap: wrap;
         }
 
-         #toolbar .ql-formats {
-             margin: 5px;
-         }
+        #toolbar .ql-formats {
+            margin: 5px;
+        }
 
         .ql-toolbar.ql-snow {
             border: 1px solid #ddd;
@@ -52,6 +42,12 @@
         .button-container {
             display: flex;
             align-items: center;
+        }
+
+        .botoesControleTabela {
+            display: none;
+            height: 300px;
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -75,7 +71,6 @@
                 <button class="botaoSublinhar" title="Sublinhado"><i class="fas fa-underline"></i></button>
             </div>
 
-
             <!-- DEFINIÇÃO DO BOTÃO COPIAR E SEU ÍCONE NO HTML/TOOLBAR-->
             <div class="button-container">
                 <button class="botaoCopiar" title="Copiar"><i class="fas fa-copy"></i></button>
@@ -87,85 +82,129 @@
                 <button class="botaoColar" title="Colar"><i class="fas fa-paste"></i></button>
             </div>
 
-
-            <!-- DEFINIÇÃO DO BOTÃO APAGAR E SEU ÍCONE NO HTML/TOOLBAR-->
-            <div class="button-container">
-                <button class="botaoApagar" title="Apagar"><i class="fas fa-trash"></i></button>
-            </div>
-
-
-            <!-- DEFINIÇÃO DO BOTÃO DEV/HTML E SEU ÍCONE NO HTML/TOOLBAR-->
-            <div class="button-container">
-                <button class="botaoHTML" title="Dev"><i class="fas fa-code"></i></button>
-            </div>
-
-            
-
-            <!-- DEFINIÇÃO DO BOTÃO LINK E SEU ÍCONE NO HTML/TOOLBAR-->
-            <div class="button-container">
-                <button class="botaoLink" title="Link"><i class="fas fa-link"></i></button>
-            </div>
-
+            <!-- DEFINIÇÃO DO BOTÃO LISTA E SEU ÍCONE NO HTML/TOOLBAR-->
             <div class="button-container">
                 <button class="botaoLista" title="Lista"><i class="fas fa-list"></i></button>
             </div>
 
+
+            <!-- DEFINIÇÃO DO BOTÃO ALINHAR ESQUERDA E SEU ÍCONE NO HTML/TOOLBAR-->
             <div class="button-container">
                 <button class="botaoAlinharEsquerda" title="Alinhar à esquerda"><i class="fas fa-align-left"></i></button>
             </div>
 
-
+            <!-- DEFINIÇÃO DO BOTÃO ALINHAR CENTRO E SEU ÍCONE NO HTML/TOOLBAR-->
             <div class="button-container">
                 <button class="botaoAlinharCentro" title="Alinhar ao centro"><i class="fas fa-align-center"></i></button>
             </div>
 
-
+            <!-- DEFINIÇÃO DO BOTÃO ALINHAR DIREITA E SEU ÍCONE NO HTML/TOOLBAR-->
             <div class="button-container">
                 <button class="botaoAlinharDireita" title="Alinhar à direita"><i class="fas fa-align-right"></i></button>
             </div>
 
 
 
-            <!-- DEFINIÇÃO DO BOTÃO ENVIAR E SEU ÍCONE NO HTML/TOOLBAR-->
-            <!--<div class="button-container">-->
-                <!--<button class="botaoEnviar" title="Enviar"><i class="fas fa-paper-plane"></i></button>-->
-            <!--</div>-->
+
+
+              <!-- CONTAINER PARA ALINHAR OS BOTÕES À DIREITA -->
+            <div class="button-container" style="margin-left: auto;">
+
+
+                <!-- DEFINIÇÃO DO BOTÃO LINK E SEU ÍCONE NO HTML/TOOLBAR-->
+                <button class="botaoTabela" title="Tabela"><i class="fas fa-table"></i></button>
+
+
+
+                <!-- DEFINIÇÃO DO BOTÃO LINK E SEU ÍCONE NO HTML/TOOLBAR-->
+                <button class="botaoLink" title="Link"><i class="fas fa-link"></i></button>
+
+
+
+                <!-- DEFINIÇÃO DO BOTÃO DEV/HTML E SEU ÍCONE NO HTML/TOOLBAR-->
+                <button class="botaoHTML" title="Dev"><i class="fas fa-code"></i></button>
+
+
+
+                <!-- DEFINIÇÃO DO BOTÃO LIXO E SEU ÍCONE NO HTML/TOOLBAR -->
+                <button class="botaoApagar" title="Apagar texto"><i class="fas fa-trash"></i></button>
+
+
+
+                <!-- DEFINIÇÃO DO BOTÃO ENVIAR E SEU ÍCONE NO HTML/TOOLBAR -->
+                <button class="botaoEnviar" title="Enviar"><i class="fas fa-paper-plane"></i></button>
+            </div>
+
+
+
+
+        </div>
+        <!-- CONTAINER PARA GERAR A TABELA -->
+        <div class="button-container botoesControleTabela">
+
+            <button id="insert-table">Insert Table</button>
+
+            <button id="insert-row-above">Insert Row Above</button>
+
+            <button id="insert-row-below">Insert Row Below</button>
+
+            <button id="insert-column-left">Insert Column Left</button>
+
+            <button id="insert-column-right">Insert Column Right</button>
+
+            <button id="delete-row">Delete Row</button>
+
+            <button id="delete-column">Delete Column</button>
+
+            <button id="delete-table">Delete Table</button>
+
         </div>
         <div id="editor" style="height: 400px;"></div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.6/quill.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.7/purify.min.js"></script>
-    <link href="https://unpkg.com/quill-better-table@1.2.8/dist/quill-better-table.css" rel="stylesheet">
+
 
     <script>
         var quill = new Quill('#editor', {
+            
             modules: {
-                toolbar: '#toolbar'
+                toolbar:  '#toolbar'
             },
             theme: 'snow'
+            
+
         });
 
+
+
         // função para proteger contra possíveis entradas XSS
-        function sanitizeContent(content) {
+        function sanitizeContent(content) 
+        {
             return DOMPurify.sanitize(content);
         }
 
         // FUNÇÃO QUE MUDA O ÍCONE PARA CHECK E VOLTA AO NORMAL
-        function confirmaClique(button, categoriaIcone) {
+        function confirmaClique(button, categoriaIcone) 
+        {
             var icon = button.querySelector('i');
-            if (icon) {
+            if (icon) 
+            {
                 var iconeCheck = icon.getAttribute('data-original-class');
-                if (!iconeCheck) {
+                if (!iconeCheck) 
+                {
                     iconeCheck = icon.className;
                     icon.setAttribute('data-original-class', iconeCheck);
                 }
 
                 // Força a restauração da classe original antes de aplicar a nova
                 icon.className = iconeCheck;
-                setTimeout(function () {
+                setTimeout(function () 
+                {
                     icon.className = categoriaIcone;
-                    setTimeout(function () {
+                    setTimeout(function () 
+                    {
                         icon.className = iconeCheck;
                     }, 1000); // DEFINE O TEMPO EM QUE O ÍCONE CHECK VAI APARECER
                 }, 0);// Altera o ícone de volta para o original
@@ -174,9 +213,11 @@
 
 
         /****************************** FUNÇÃO BOTÃO NEGRITO ******************************/
-        document.querySelector('.botaoNegrito').addEventListener('click', function () {
+        document.querySelector('.botaoNegrito').addEventListener('click', function () 
+        {
             var range = quill.getSelection();
-            if (range) {
+            if (range) 
+            {
                 var format = quill.getFormat(range);
                 var isBold = format.bold || false;
                 quill.formatText(range.index, range.length, 'bold', !isBold);
@@ -186,9 +227,11 @@
 
 
         /****************************** FUNÇÃO BOTÃO ITALICO ******************************/
-        document.querySelector('.botaoItalico').addEventListener('click', function () {
+        document.querySelector('.botaoItalico').addEventListener('click', function () 
+        {
             var range = quill.getSelection();
-            if (range) {
+            if (range) 
+            {
                 var format = quill.getFormat(range);
                 var isItalic = format.italic || false;
                 quill.formatText(range.index, range.length, 'italic', !isItalic);
@@ -198,9 +241,11 @@
 
 
         /****************************** FUNÇÃO BOTÃO SUBLINHAR ******************************/
-        document.querySelector('.botaoSublinhar').addEventListener('click', function () {
+        document.querySelector('.botaoSublinhar').addEventListener('click', function () 
+        {
             var range = quill.getSelection();
-            if (range) {
+            if (range) 
+            {
                 var format = quill.getFormat(range);
                 var isUnderline = format.underline || false;
                 quill.formatText(range.index, range.length, 'underline', !isUnderline);
@@ -210,12 +255,15 @@
 
 
         /****************************** FUNÇÃO BOTÃO COPIAR ******************************/
-        document.querySelector('.botaoCopiar').addEventListener('click', function () {
+        document.querySelector('.botaoCopiar').addEventListener('click', function () 
+        {
             var texto = quill.getText();
-            navigator.clipboard.writeText(texto).then(function () {
+            navigator.clipboard.writeText(texto).then(function () 
+            {
                 confirmaClique(document.querySelector('.botaoCopiar'), 'fas fa-check');
                 //alert('Copiado com sucesso.');
-            }).catch(function () {
+            }).catch(function () 
+            {
                 alert('Falha ao copiar o texto.');
             });
         });
@@ -223,10 +271,10 @@
 
         /****************************** FUNÇÃO BOTÃO COLAR ******************************/
         document.querySelector('.botaoColar').addEventListener('click', function () {
-            navigator.clipboard.readText().then(function (texto) {
+            navigator.clipboard.readText().then(function (html) {
                 var tamTexto = quill.getSelection();
                 if (tamTexto) {
-                    quill.insertText(tamTexto.index, texto);
+                    quill.clipboard.dangerouslyPasteHTML(tamTexto.index, html);
                     confirmaClique(document.querySelector('.botaoColar'), 'fas fa-check');
                     //alert('Colado com sucesso.');
                 }
@@ -234,6 +282,217 @@
                 alert('Falha ao colar o texto.');
             });
         });
+
+
+        /****************************** FUNÇÃO BOTÃO PARA PERMITIR O ALINHAMENTO ******************************/
+        function alinharTexto(alinhamento) 
+        {
+            var range = quill.getSelection();
+            if (range) 
+            {
+                quill.format('align', alinhamento);
+                confirmaClique(this, 'fas fa-check');
+            }
+        }
+
+        /****************************** FUNÇÃO BOTÃO LISTA ******************************/
+        document.querySelector('.botaoLista').addEventListener('click', function () 
+        {
+            var range = quill.getSelection();
+            if (range) 
+            {
+                quill.format('list', 'bullet');
+            }
+            confirmaClique(document.querySelector('.botaoLista'), 'fas fa-check');
+
+        });
+
+
+        /****************************** FUNÇÃO BOTÃO ALINHAR ESQUERDA ******************************/
+        document.querySelector('.botaoAlinharEsquerda').addEventListener('click', function () 
+        {
+            var range = quill.getSelection();
+            if (range) 
+            {
+                quill.format('align', '');
+            }
+            confirmaClique(document.querySelector('.botaoAlinharEsquerda'), 'fas fa-check');
+
+        });
+
+
+        /****************************** FUNÇÃO BOTÃO ALINHAR CENTRO ******************************/
+        document.querySelector('.botaoAlinharCentro').addEventListener('click', function () 
+        {
+            var range = quill.getSelection();
+            if (range) 
+            {
+                var currentAlignment = quill.getFormat(range).align;
+                if (currentAlignment !== 'center') 
+                {
+                    quill.format('align', 'center');
+                }
+                else 
+                {
+                    quill.format('align', '');
+                }
+            }
+            confirmaClique(document.querySelector('.botaoAlinharCentro'), 'fas fa-check');
+        });
+
+
+        /****************************** FUNÇÃO BOTÃO ALINHAR DIREITO ******************************/
+        document.querySelector('.botaoAlinharDireita').addEventListener('click', function () 
+        {
+            var range = quill.getSelection();
+            if (range) {
+                var currentAlignment = quill.getFormat(range).align;
+                if (currentAlignment !== 'right') 
+                {
+                    quill.format('align', 'right');
+                }
+                else {
+                    quill.format('align', '');
+                }
+            }
+            confirmaClique(document.querySelector('.botaoAlinharDireita'), 'fas fa-check');
+        });
+
+
+
+        class Table {
+            constructor(quill) {
+                this.quill = quill;
+            }
+
+            insertTable(rows, columns) {
+                const tableHTML = this.createTable(rows, columns);
+                const range = this.quill.getSelection();
+                if (range) {
+                    this.quill.clipboard.dangerouslyPasteHTML(range.index, tableHTML);
+                }
+            }
+
+            createTable(rows, columns) {
+                let table = '<table>';
+                for (let i = 0; i < rows; i++) {
+                    table += '<tr>';
+                    for (let j = 0; j < columns; j++) {
+                        table += '<td>Cell</td>'; // Adiciona uma célula à tabela
+                    }
+                    table += '</tr>';
+                }
+                table += '</table>';
+                return table;
+            }
+
+            insertRowAbove() {
+                // Adicione lógica para inserir uma linha acima
+            }
+
+            insertRowBelow() {
+                // Adicione lógica para inserir uma linha abaixo
+            }
+
+            insertColumnLeft() {
+                // Adicione lógica para inserir uma coluna à esquerda
+            }
+
+            insertColumnRight() {
+                // Adicione lógica para inserir uma coluna à direita
+            }
+
+            deleteRow() {
+                // Adicione lógica para deletar a linha
+            }
+
+            deleteColumn() {
+                // Adicione lógica para deletar a coluna
+            }
+
+            deleteTable() {
+                // Adicione lógica para deletar a tabela
+            }
+        }
+
+
+        /****************************** FUNÇÃO BOTÃO TABELA ******************************/
+        document.querySelector('.botaoTabela').addEventListener('click', function () 
+        {
+            confirmaClique(document.querySelector('.botaoTabela'), 'fas fa-check');
+            var botoesTabela = document.querySelector('.botoesControleTabela');
+            if (botoesTabela.classList.contains('botoesControleTabela')) 
+            {
+                botoesTabela.classList.remove('botoesControleTabela');
+            } 
+            else 
+            {
+                botoesTabela.classList.add('botoesControleTabela');
+            }
+        });
+
+        document.querySelector('#insert-table').addEventListener('click', function () {
+            table.insertTable(2, 2);
+        });
+        document.querySelector('#insert-row-above').addEventListener('click', function () {
+            table.insertRowAbove();
+        });
+        document.querySelector('#insert-row-below').addEventListener('click', function () {
+            table.insertRowBelow();
+        });
+        document.querySelector('#insert-column-left').addEventListener('click', function () {
+            table.insertColumnLeft();
+        });
+        document.querySelector('#insert-column-right').addEventListener('click', function () {
+            table.insertColumnRight();
+        });
+        document.querySelector('#delete-row').addEventListener('click', function () {
+            table.deleteRow();
+        });
+        document.querySelector('#delete-column').addEventListener('click', function () {
+            table.deleteColumn();
+        });
+        document.querySelector('#delete-table').addEventListener('click', function () {
+            table.deleteTable();
+        });
+
+
+
+
+        /****************************** FUNÇÃO BOTÃO LINK ******************************/
+        document.querySelector('.botaoLink').addEventListener('click', function () 
+        {
+            var range = quill.getSelection();
+            var linkUrl = prompt('Insira o link:', 'https://');
+            if (linkUrl) 
+            {
+                if (range && range.length > 0) 
+                {
+                    // Formata o texto selecionado como um link
+                    quill.formatText(range.index, range.length, { link: linkUrl });
+                } 
+                else 
+                {
+                    // Insere o link na posição atual do cursor
+                    quill.insertText(range.index, linkUrl, { link: linkUrl });
+                }
+                confirmaClique(document.querySelector('.botaoLink'), 'fas fa-check');
+            } 
+            else 
+            {
+                alert('Por favor, insira um URL válido.');
+            }
+        });
+
+        
+
+        /****************************** FUNÇÃO BOTÃO DEV ******************************/
+        document.querySelector('.botaoHTML').addEventListener('click', function () 
+        {
+            confirmaClique(document.querySelector('.botaoHTML'), 'fas fa-check');
+            alert("Função não implementada");
+
+        }); 
 
 
         /****************************** FUNÇÃO BOTÃO APAGAR ******************************/
@@ -244,19 +503,12 @@
         });
 
 
-        /****************************** FUNÇÃO BOTÃO DEV ******************************/
-        document.querySelector('.botaoHTML').addEventListener('click', function () {
-            confirmaClique(document.querySelector('.botaoHTML'), 'fas fa-check');
-            alert("Função não implementada");
+        /****************************** FUNÇÃO BOTÃO ENVIAR ******************************/
+        document.querySelector('.botaoEnviar').addEventListener('click', function () 
+        {
+            confirmaClique(document.querySelector('.botaoEnviar'), 'fas fa-check');
 
         }); 
-
-
-        /****************************** FUNÇÃO BOTÃO ENVIAR ******************************/
-        /*
-        document.querySelector('.botaoEnviar').addEventListener('click', function () {
-            
-        }); */
 
         /****************************** FUNÇÃO BOTÃO TABELA ******************************/
         /*
@@ -265,75 +517,7 @@
             alert("Função não implementada");
         });
         */
-
-        /****************************** FUNÇÃO BOTÃO LINK ******************************/
-        document.querySelector('.botaoLink').addEventListener('click', function () {
-            var range = quill.getSelection();
-            if (range) {
-                var linkUrl = prompt('Insira o link:', 'https://');
-                if (linkUrl) {
-                    // Formata o texto selecionado como um link
-                    quill.formatText(range.index, range.length, { link: linkUrl });
-                    confirmaClique(document.querySelector('.botaoLink'), 'fas fa-check');
-                }
-            } else {
-                alert('Por favor, selecione o texto dentro do editor para adicionar um link.');
-            }
-        });
-
-        document.querySelector('.botaoLista').addEventListener('click', function () {
-            confirmaClique(document.querySelector('.botaoLista'), 'fas fa-check');
-            alert("Função não implementada");
-        });
-
-        function alinharTexto(alinhamento) {
-            var range = quill.getSelection();
-            if (range) {
-                quill.format('align', alinhamento);
-                confirmaClique(this, 'fas fa-check');
-            }
-        }
-
-        /****************************** FUNÇÃO BOTÃO ALINHAR ESQUERDA ******************************/
-        document.querySelector('.botaoAlinharEsquerda').addEventListener('click', function () {
-            alinharTexto == 'left';
-            if (alinharTexto !== 'left') {
-                alinharTexto('left');
-            }
-            else {
-                alinharTexto('left');
-            }
-            confirmaClique(document.querySelector('.botaoAlinharEsquerda'), 'fas fa-check');
-        });
-
-
-        /****************************** FUNÇÃO BOTÃO ALINHAR CENTRO ******************************/
-        document.querySelector('.botaoAlinharCentro').addEventListener('click', function () {
-            alinharTexto == 'center';
-            if (alinharTexto !== 'center') {
-                alinharTexto('center');
-            }
-            else if (alinharTexto == 'center') {
-                alinharTexto('left');
-            }
-            confirmaClique(document.querySelector('.botaoAlinharCentro'), 'fas fa-check');
-
-        });
-
-
-        /****************************** FUNÇÃO BOTÃO ALINHAR DIREITO ******************************/
-        document.querySelector('.botaoAlinharDireita').addEventListener('click', function () {
-            alinharTexto('right');
-
-            if (alinharTexto !== 'right') {
-                alinharTexto('right');
-            }
-            else if (alinharTexto == 'right') {
-                alinharTexto('left');
-            }
-            confirmaClique(document.querySelector('.botaoAlinharDireita'), 'fas fa-check');
-        });
-
+       
 
     </script>
 </body>
