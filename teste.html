@@ -1,0 +1,72 @@
+<!-- Include stylesheet -->
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
+
+<!-- Create the editor container -->
+<div id="editor">
+  <p>Hello World!</p>
+  <p>Some initial <strong>bold</strong> text</p>
+  <p><br /></p>
+  <div>
+    <button id="insert-table">Insert Table</button>
+    <button id="insert-row-above">Insert Row Above</button>
+    <button id="insert-row-below">Insert Row Below</button>
+    <button id="insert-column-left">Insert Column Left</button>
+    <button id="insert-column-right">Insert Column Right</button>
+    <button id="delete-row">Delete Row</button>
+    <button id="delete-column">Delete Column</button>
+    <button id="delete-table">Delete Table</button>
+  </div>
+  
+  <div class="panel">
+    <div id="output-container"></div>
+  </div>
+
+</div>
+
+<style>
+    .panel 
+    {
+        flex: 1;
+        margin-left: 25px;
+        margin-right: 25px;
+    }
+
+    #editor
+    {
+        height:200;
+    }
+</style>
+
+<!-- Include the Quill library -->
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+
+<!-- Initialize Quill editor -->
+<script>
+  const quill = new Quill('#editor', {
+    theme: 'snow'
+  });
+    document.querySelector('#insert-table').addEventListener('click', function() {
+    table.insertTable(2, 2);
+    });
+    document.querySelector('#insert-row-above').addEventListener('click', function() {
+    table.insertRowAbove();
+    });
+    document.querySelector('#insert-row-below').addEventListener('click', function() {
+    table.insertRowBelow();
+    });
+    document.querySelector('#insert-column-left').addEventListener('click', function() {
+    table.insertColumnLeft();
+    });
+    document.querySelector('#insert-column-right').addEventListener('click', function() {
+    table.insertColumnRight();
+    });
+    document.querySelector('#delete-row').addEventListener('click', function() {
+    table.deleteRow();
+    });
+    document.querySelector('#delete-column').addEventListener('click', function() {
+    table.deleteColumn();
+    });
+    document.querySelector('#delete-table').addEventListener('click', function() {
+    table.deleteTable();
+    });
+</script>
