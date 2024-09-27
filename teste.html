@@ -1,72 +1,171 @@
-<!-- Include stylesheet -->
+<!-- Inclua a folha de estilos -->
 <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
 
-<!-- Create the editor container -->
-<div id="editor">
-  <p>Hello World!</p>
-  <p>Some initial <strong>bold</strong> text</p>
-  <p><br /></p>
-  <div>
-    <button id="insert-table">Insert Table</button>
-    <button id="insert-row-above">Insert Row Above</button>
-    <button id="insert-row-below">Insert Row Below</button>
-    <button id="insert-column-left">Insert Column Left</button>
-    <button id="insert-column-right">Insert Column Right</button>
-    <button id="delete-row">Delete Row</button>
-    <button id="delete-column">Delete Column</button>
-    <button id="delete-table">Delete Table</button>
-  </div>
-  
-  <div class="panel">
-    <div id="output-container"></div>
+<!-- Crie o contêiner do editor -->
+<div id="editor-container">
+  <div id="editor">
+    
   </div>
 
+  <!-- Botão de Tabela e Opções -->
+  <div class="dropdown">
+    <button id="table-button">Tabela</button>
+    <div id="table-options" class="dropdown-content" style="display: none;">
+      <button id="insert-table">Inserir Tabela</button>
+      <button id="insert-row-above">Inserir Linha Acima</button>
+      <button id="insert-row-below">Inserir Linha Abaixo</button>
+      <button id="insert-column-left">Inserir Coluna à Esquerda</button>
+      <button id="insert-column-right">Inserir Coluna à Direita</button>
+      <button id="delete-row">Deletar Linha</button>
+      <button id="delete-column">Deletar Coluna</button>
+      <button id="delete-table">Deletar Tabela</button>
+    </div>
+  </div>
+</div>
+
+<div class="panel">
+  <div id="output-container"></div>
 </div>
 
 <style>
     .panel 
     {
-        flex: 1;
-        margin-left: 25px;
-        margin-right: 25px;
+      flex: 1;
+      margin-left: 25px;
+      margin-right: 25px;
     }
 
-    #editor
+    #editor 
     {
-        height:200;
+      height: 600px;
+      margin-bottom: 10px;
+    }
+
+    .dropdown 
+    {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-content 
+    {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+
+    .dropdown-content button 
+    {
+      color: black;
+      padding: 12px 16px;
+      text-align: left;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .dropdown-content button:hover 
+    {
+      background-color: #f1f1f1;
     }
 </style>
 
-<!-- Include the Quill library -->
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill-table@1.0.0/dist/quill-table.min.js"></script>
 
-<!-- Initialize Quill editor -->
 <script>
-  const quill = new Quill('#editor', {
-    theme: 'snow'
+  const opcoesToolbar = 
+  [
+    ["bold", "italic", "underline", "link"],
+    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+    ["image", "code-block"],
+    ["codeview"]
+  ];
+
+  const editor = new Quill('#editor', 
+  {
+    theme: 'snow',
+    modules: 
+    {
+      toolbar: opcoesToolbar,
+      table: true
+    }
   });
-    document.querySelector('#insert-table').addEventListener('click', function() {
-    table.insertTable(2, 2);
-    });
-    document.querySelector('#insert-row-above').addEventListener('click', function() {
-    table.insertRowAbove();
-    });
-    document.querySelector('#insert-row-below').addEventListener('click', function() {
-    table.insertRowBelow();
-    });
-    document.querySelector('#insert-column-left').addEventListener('click', function() {
-    table.insertColumnLeft();
-    });
-    document.querySelector('#insert-column-right').addEventListener('click', function() {
-    table.insertColumnRight();
-    });
-    document.querySelector('#delete-row').addEventListener('click', function() {
-    table.deleteRow();
-    });
-    document.querySelector('#delete-column').addEventListener('click', function() {
-    table.deleteColumn();
-    });
-    document.querySelector('#delete-table').addEventListener('click', function() {
-    table.deleteTable();
-    });
+
+
+  document.querySelector('#table-button').addEventListener('click', function(event) 
+  {
+    const tableOptions = document.querySelector('#table-options');
+    tableOptions.style.display = tableOptions.style.display === 'none' ? 'block' : 'none';
+    event.stopPropagation(); // Evita que o clique feche o dropdown
+  });
+
+  
+  // Fecha o dropdown se clicar fora dele
+  window.addEventListener('click', function() 
+  {
+    const tableOptions = document.querySelector('#table-options');
+    tableOptions.style.display = 'none';
+  });
+
+
+  document.querySelector('#insert-table').addEventListener('click', function() 
+  {
+    editor.getModule('table').insertTable(2, 2);
+  });
+
+
+
+  document.querySelector('#insert-row-above').addEventListener('click', function() 
+  {
+    editor.getModule('table').insertRowAbove();
+  });
+
+
+
+  document.querySelector('#insert-row-below').addEventListener('click', function() 
+  {
+    editor.getModule('table').insertRowBelow();
+  });
+
+
+
+  document.querySelector('#insert-column-left').addEventListener('click', function() 
+  {
+    editor.getModule('table').insertColumnLeft();
+  });
+
+
+
+  document.querySelector('#insert-column-right').addEventListener('click', function() 
+  {
+    editor.getModule('table').insertColumnRight();
+  });
+
+
+
+  document.querySelector('#delete-row').addEventListener('click', function() 
+  {
+    editor.getModule('table').deleteRow();
+  });
+
+
+
+  document.querySelector('#delete-column').addEventListener('click', function() 
+  {
+    editor.getModule('table').deleteColumn();
+  });
+
+
+
+  document.querySelector('#delete-table').addEventListener('click', function() 
+  {
+    editor.getModule('table').deleteTable();
+  });
+
+
 </script>
